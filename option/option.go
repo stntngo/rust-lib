@@ -46,6 +46,15 @@ func (o Option[T]) UnwrapOr(alt T) T {
 	return alt
 }
 
+func (o Option[T]) UnwrapOrError(err error) (T, error) {
+	if o.Valid() {
+		return o.Unwrap(), nil
+	}
+
+	var empty T
+	return empty, err
+}
+
 func Map[T, U any](opt Option[T], fn func(T) U) Option[U] {
 	if !opt.Valid() {
 		return None[U]()
